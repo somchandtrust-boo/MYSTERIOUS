@@ -7,11 +7,6 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-
-/* =========================
-   MIDDLEWARE
-========================= */
-
 app.use(express.json({ limit: "1mb" }));
 
 app.use(
@@ -24,12 +19,16 @@ app.use(
 
 
 /* =========================
-   OPENAI
+   OPENAI CLIENT
 ========================= */
 
-const client = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
-});
+const apiKey = process.env.OPENAI_API_KEY;
+
+const client = apiKey
+    ? new OpenAI({
+        apiKey: apiKey
+    })
+    : null;
 
 
 /* =========================
@@ -57,8 +56,7 @@ app.get("/health", (req, res) => {
     res.json({
         success: true,
         status: "online",
-        aiConfigured:
-            Boolean(process.env.OPENAI_API_KEY),
+        aiConfigured: Boolean(apiKey),
         time: new Date().toISOString()
     });
 
@@ -66,7 +64,7 @@ app.get("/health", (req, res) => {
 
 
 /* =========================
-   ASK AI
+   ASK
 ========================= */
 
 app.post("/ask", async (req, res) => {
@@ -89,21 +87,31 @@ app.post("/ask", async (req, res) => {
         }
 
 
-        if (!process.env.OPENAI_API_KEY) {
+        /* Check API key */
+
+        if (!apiKey) {
+
+            console.error(
+                "OPENAI_API_KEY is missing."
+            );
 
             return res.status(500).json({
                 success: false,
                 error:
-                    "AI service is not configured on the server."
+                    "OPENAI_API_KEY is not configured in Render."
             });
 
         }
 
 
+        /* =========================
+           OPENAI REQUEST
+        ========================= */
+
         const response =
             await client.responses.create({
 
-                model: "gpt-5.6-luna",
+                model: "gpt-5",
 
                 tools: [
                     {
@@ -114,18 +122,20 @@ app.post("/ask", async (req, res) => {
                 input: [
                     {
                         role: "system",
+
                         content:
-                            "You are MYSTERIOUS, a multilingual " +
-                            "knowledge assistant. Answer clearly " +
-                            "and accurately. The user may ask in " +
-                            "Hindi, Gujarati, or English. " +
-                            "Reply primarily in the language used " +
-                            "by the user. For current or changing " +
-                            "information, use web search. " +
-                            "Do not invent facts."
+                            "You are MYSTERIOUS, a powerful " +
+                            "multilingual knowledge assistant. " +
+                            "Answer in the language used by the " +
+                            "user. You understand Hindi, Gujarati " +
+                            "and English. Give accurate, useful " +
+                            "and understandable answers. " +
+                            "For current information, use web search. " +
+                            "Never invent facts."
                     },
                     {
                         role: "user",
+
                         content: question
                     }
                 ]
@@ -138,7 +148,17 @@ app.post("/ask", async (req, res) => {
             "Mysterious could not generate an answer.";
 
 
-        res.json({
+        console.log(
+            "Question:",
+            question
+        );
+
+        console.log(
+            "Answer generated successfully."
+        );
+
+
+        return res.json({
 
             success: true,
 
@@ -146,7 +166,8 @@ app.post("/ask", async (req, res) => {
 
             answer: answer,
 
-            source: "Mysterious AI Knowledge Engine"
+            source:
+                "Mysterious AI Knowledge Engine"
 
         });
 
@@ -154,17 +175,48 @@ app.post("/ask", async (req, res) => {
     } catch (error) {
 
         console.error(
-            "Mysterious AI Error:",
-            error
+            "========== MYSTERIOUS AI ERROR =========="
+        );
+
+        console.error(
+            "Message:",
+            error.message
+        );
+
+        console.error(
+            "Status:",
+            error.status
+        );
+
+        console.error(
+            "Code:",
+            error.code
+        );
+
+        console.error(
+            "Type:",
+            error.type
+        );
+
+        console.error(
+            "Name:",
+            error.name
+        );
+
+        console.error(
+            "=========================================="
         );
 
 
-        res.status(500).json({
+        return res.status(500).json({
 
             success: false,
 
             error:
-                "Mysterious AI service में समस्या हुई।"
+                "Mysterious AI request failed.",
+
+            details:
+                error.message || "Unknown server error."
 
         });
 
@@ -191,13 +243,13 @@ app.use((req, res) => {
 
 
 /* =========================
-   START
+   SERVER
 ========================= */
 
 app.listen(PORT, () => {
 
     console.log(
-        `Mysterious AI server running on port ${PORT}`
+        `Mysterious server running on port ${PORT}`
     );
 
 });
