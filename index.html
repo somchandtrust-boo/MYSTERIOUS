@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>Mysterious — Secret Knowledge Room</title>
+<title>MYSTERIOUS — Secret Knowledge Room</title>
 
 <style>
 *{
@@ -22,6 +22,10 @@ html,body{
     color:#fff;
 }
 
+button,input{
+    font:inherit;
+}
+
 /* =========================
    INTRO
 ========================= */
@@ -33,20 +37,37 @@ html,body{
     justify-content:center;
     align-items:center;
     overflow:hidden;
-    background:
-        radial-gradient(circle at 50% 45%,#1d2027 0%,#08090c 35%,#000 75%);
-}
 
-/* stars */
+    background:
+        radial-gradient(
+            circle at center,
+            #25282f 0%,
+            #0a0b0e 35%,
+            #000 75%
+        );
+}
 
 .stars{
     position:absolute;
     inset:0;
-    opacity:.35;
+    opacity:.4;
+
     background-image:
-        radial-gradient(circle,white 1px,transparent 1px),
-        radial-gradient(circle,rgba(255,255,255,.7) 1px,transparent 1px);
-    background-size:95px 95px,145px 145px;
+        radial-gradient(circle,#fff 1px,transparent 1px),
+        radial-gradient(circle,rgba(255,255,255,.6) 1px,transparent 1px);
+
+    background-size:100px 100px,160px 160px;
+
+    animation:starsMove 20s linear infinite;
+}
+
+@keyframes starsMove{
+    from{
+        transform:translateY(0);
+    }
+    to{
+        transform:translateY(-100px);
+    }
 }
 
 /* =========================
@@ -57,30 +78,40 @@ html,body{
     position:absolute;
     border-radius:50%;
     pointer-events:none;
-    filter:blur(45px);
+
     background:
         radial-gradient(
             ellipse,
-            rgba(220,225,230,.25),
+            rgba(220,225,235,.25),
             rgba(120,125,135,.08),
             transparent 70%
         );
+
+    filter:blur(50px);
 }
 
 .fog1{
     width:900px;
     height:430px;
     left:-300px;
-    bottom:-100px;
-    animation:fog1 10s infinite alternate ease-in-out;
+    bottom:-120px;
+
+    animation:
+        fogMove1 10s
+        infinite alternate
+        ease-in-out;
 }
 
 .fog2{
     width:850px;
     height:400px;
     right:-280px;
-    top:-80px;
-    animation:fog2 12s infinite alternate ease-in-out;
+    top:-100px;
+
+    animation:
+        fogMove2 12s
+        infinite alternate
+        ease-in-out;
 }
 
 .fog3{
@@ -89,44 +120,61 @@ html,body{
     left:30%;
     top:40%;
     opacity:.25;
-    animation:fog3 9s infinite alternate ease-in-out;
+
+    animation:
+        fogMove3 9s
+        infinite alternate
+        ease-in-out;
 }
 
-@keyframes fog1{
-    from{transform:translateX(0) scale(1);}
-    to{transform:translateX(300px) scale(1.3);}
+@keyframes fogMove1{
+    from{
+        transform:translateX(0) scale(1);
+    }
+    to{
+        transform:translateX(300px) scale(1.3);
+    }
 }
 
-@keyframes fog2{
-    from{transform:translateX(0) scale(1);}
-    to{transform:translateX(-250px) scale(1.25);}
+@keyframes fogMove2{
+    from{
+        transform:translateX(0) scale(1);
+    }
+    to{
+        transform:translateX(-250px) scale(1.25);
+    }
 }
 
-@keyframes fog3{
-    from{transform:translateX(-150px);}
-    to{transform:translateX(180px);}
+@keyframes fogMove3{
+    from{
+        transform:translateX(-150px);
+    }
+    to{
+        transform:translateX(180px);
+    }
 }
 
 /* =========================
-   MYSTERIOUS BUTTON
+   MAIN BUTTON
 ========================= */
 
 .secretButton{
     position:relative;
-    z-index:10;
+    z-index:20;
 
-    width:210px;
-    height:210px;
+    width:220px;
+    height:220px;
 
     border-radius:50%;
 
-    border:1px solid rgba(255,255,255,.35);
+    border:
+        1px solid rgba(255,255,255,.35);
 
     background:
         radial-gradient(
             circle at 32% 25%,
-            #777,
-            #282a2e 35%,
+            #777b82,
+            #292b30 35%,
             #050608 75%
         );
 
@@ -136,21 +184,24 @@ html,body{
 
     font-size:25px;
     font-weight:bold;
+
     letter-spacing:5px;
 
     box-shadow:
-        0 0 30px rgba(255,255,255,.12),
-        inset 0 0 45px rgba(255,255,255,.08);
+        0 0 35px rgba(255,255,255,.12),
+        inset 0 0 50px rgba(255,255,255,.08);
 
-    transition:.5s;
+    transition:
+        transform .4s,
+        box-shadow .4s;
 }
 
 .secretButton:hover{
     transform:scale(1.08);
 
     box-shadow:
-        0 0 70px rgba(255,255,255,.22),
-        inset 0 0 50px rgba(255,255,255,.12);
+        0 0 80px rgba(255,255,255,.25),
+        inset 0 0 55px rgba(255,255,255,.15);
 }
 
 .secretButton:active{
@@ -159,26 +210,42 @@ html,body{
 
 .secretButton::before{
     content:"";
+
     position:absolute;
+
     inset:-18px;
+
     border-radius:50%;
-    border:1px solid rgba(255,255,255,.15);
-    animation:pulse 2.5s infinite;
+
+    border:
+        1px solid rgba(255,255,255,.18);
+
+    animation:
+        pulse 2.5s infinite;
 }
 
 .secretButton::after{
     content:"";
+
     position:absolute;
+
     inset:-40px;
+
     border-radius:50%;
-    border:1px solid rgba(255,255,255,.06);
+
+    border:
+        1px solid rgba(255,255,255,.06);
 }
 
 .buttonSmall{
     display:block;
+
     margin-top:10px;
+
     font-size:9px;
+
     letter-spacing:3px;
+
     opacity:.5;
 }
 
@@ -187,6 +254,7 @@ html,body{
         transform:scale(.9);
         opacity:.8;
     }
+
     100%{
         transform:scale(1.3);
         opacity:0;
@@ -200,54 +268,74 @@ html,body{
 #doorScene{
     position:fixed;
     inset:0;
+
     display:none;
+
     justify-content:center;
     align-items:center;
+
+    overflow:hidden;
+
     background:
         radial-gradient(
             ellipse at center,
-            #373940 0%,
-            #141519 38%,
-            #020304 78%
+            #393c43 0%,
+            #15171b 40%,
+            #020304 80%
         );
+
     z-index:50;
-    overflow:hidden;
 }
 
 .doorFog{
     position:absolute;
+
     width:1100px;
     height:600px;
+
     border-radius:50%;
+
     background:
         radial-gradient(
             ellipse,
-            rgba(230,235,240,.18),
+            rgba(230,235,240,.2),
             transparent 70%
         );
+
     filter:blur(55px);
-    animation:doorFog 7s infinite alternate;
+
+    animation:
+        doorFogMove 7s
+        infinite alternate;
 }
 
-@keyframes doorFog{
-    from{transform:translateX(-180px) scale(1);}
-    to{transform:translateX(180px) scale(1.3);}
-}
+@keyframes doorFogMove{
+    from{
+        transform:translateX(-180px) scale(1);
+    }
 
-/* light rays */
+    to{
+        transform:translateX(180px) scale(1.3);
+    }
+}
 
 .lightRay{
     position:absolute;
-    width:4px;
-    height:80vh;
-    background:rgba(255,255,255,.06);
+
+    width:5px;
+    height:90vh;
+
+    background:
+        rgba(255,255,255,.08);
+
     filter:blur(15px);
-    transform:rotate(18deg);
+
     opacity:0;
 }
 
 .ray1{
     left:35%;
+    transform:rotate(18deg);
 }
 
 .ray2{
@@ -256,21 +344,19 @@ html,body{
 }
 
 #doorScene.open .lightRay{
-    animation:rayOpen 2.5s forwards;
+    animation:
+        rayOpen 2.5s forwards;
 }
 
 @keyframes rayOpen{
     0%{
         opacity:0;
-        transform:scaleY(.2) rotate(18deg);
     }
+
     100%{
         opacity:.8;
-        transform:scaleY(1) rotate(18deg);
     }
 }
-
-/* frame */
 
 .doorFrame{
     position:relative;
@@ -289,8 +375,6 @@ html,body{
     overflow:hidden;
 }
 
-/* inside light */
-
 .doorLight{
     position:absolute;
     inset:0;
@@ -299,7 +383,7 @@ html,body{
         radial-gradient(
             ellipse at center,
             rgba(255,255,255,.95),
-            rgba(150,155,165,.4),
+            rgba(170,175,185,.35),
             transparent 70%
         );
 
@@ -312,10 +396,9 @@ html,body{
     opacity:1;
 }
 
-/* door */
-
 .door{
     position:absolute;
+
     inset:0;
 
     background:
@@ -331,7 +414,8 @@ html,body{
     transform-origin:left center;
 
     transition:
-        transform 3.2s cubic-bezier(.77,0,.18,1);
+        transform 3.2s
+        cubic-bezier(.77,0,.18,1);
 
     z-index:5;
 
@@ -343,9 +427,11 @@ html,body{
     content:"";
 
     position:absolute;
+
     inset:24px;
 
-    border:1px solid rgba(255,255,255,.14);
+    border:
+        1px solid rgba(255,255,255,.14);
 
     box-shadow:
         inset 0 0 20px rgba(255,255,255,.03);
@@ -359,12 +445,15 @@ html,body{
     left:50%;
     top:50%;
 
-    transform:translate(-50%,-50%);
+    transform:
+        translate(-50%,-50%);
 
     font-size:25px;
+
     letter-spacing:7px;
 
-    color:rgba(255,255,255,.42);
+    color:
+        rgba(255,255,255,.42);
 
     white-space:nowrap;
 }
@@ -385,15 +474,22 @@ html,body{
     box-shadow:
         0 0 15px rgba(255,255,255,.6);
 
-    animation:handleGlow 1.8s infinite alternate;
+    animation:
+        handleGlow 1.8s
+        infinite alternate;
 }
 
 @keyframes handleGlow{
     from{
-        box-shadow:0 0 7px rgba(255,255,255,.3);
+        box-shadow:
+            0 0 7px
+            rgba(255,255,255,.3);
     }
+
     to{
-        box-shadow:0 0 25px rgba(255,255,255,.8);
+        box-shadow:
+            0 0 25px
+            rgba(255,255,255,.8);
     }
 }
 
@@ -436,18 +532,25 @@ html,body{
 
 .access{
     font-size:11px;
+
     letter-spacing:6px;
+
     color:#aaa;
+
     margin-bottom:25px;
 }
 
 .welcomeTitle{
-    font-size:clamp(38px,8vw,80px);
+    font-size:
+        clamp(38px,8vw,80px);
+
     letter-spacing:9px;
+
     margin-bottom:28px;
 
     text-shadow:
-        0 0 30px rgba(255,255,255,.15);
+        0 0 30px
+        rgba(255,255,255,.15);
 }
 
 .welcomeText{
@@ -463,14 +566,20 @@ html,body{
 
 .cursor{
     display:inline-block;
+
     width:2px;
     height:20px;
-    background:white;
-    animation:blink .8s infinite;
+
+    background:#fff;
+
+    animation:
+        blink .8s infinite;
 }
 
 @keyframes blink{
-    50%{opacity:0;}
+    50%{
+        opacity:0;
+    }
 }
 
 .enterButton{
@@ -478,14 +587,16 @@ html,body{
 
     padding:16px 34px;
 
-    border:1px solid rgba(255,255,255,.3);
+    border:
+        1px solid
+        rgba(255,255,255,.3);
 
     border-radius:50px;
 
     background:
         rgba(255,255,255,.05);
 
-    color:white;
+    color:#fff;
 
     cursor:pointer;
 
@@ -495,7 +606,7 @@ html,body{
 }
 
 .enterButton:hover{
-    background:white;
+    background:#fff;
     color:#000;
     transform:scale(1.04);
 }
@@ -525,31 +636,35 @@ html,body{
 
 .header{
     text-align:center;
+
     padding:28px 20px 10px;
 }
 
 .logo{
     font-size:30px;
+
     letter-spacing:9px;
 }
 
 .subtitle{
     margin-top:8px;
+
     font-size:10px;
+
     letter-spacing:4px;
+
     color:#888;
 }
-
-/* =========================
-   SEARCH
-========================= */
 
 .searchArea{
     min-height:70vh;
 
     display:flex;
+
     flex-direction:column;
+
     justify-content:center;
+
     align-items:center;
 
     padding:30px 20px;
@@ -568,23 +683,28 @@ html,body{
 
 .searchDescription{
     color:#888;
+
     text-align:center;
+
     margin-bottom:40px;
 }
 
 .searchBox{
     position:relative;
+
     width:min(850px,96vw);
 }
 
 .searchInput{
     width:100%;
+
     height:72px;
 
     border-radius:40px;
 
     border:
-        1px solid rgba(255,255,255,.2);
+        1px solid
+        rgba(255,255,255,.2);
 
     outline:none;
 
@@ -601,7 +721,8 @@ html,body{
     backdrop-filter:blur(20px);
 
     box-shadow:
-        0 0 45px rgba(255,255,255,.04);
+        0 0 45px
+        rgba(255,255,255,.04);
 }
 
 .searchInput::placeholder{
@@ -609,7 +730,8 @@ html,body{
 }
 
 .searchInput:focus{
-    border-color:rgba(255,255,255,.55);
+    border-color:
+        rgba(255,255,255,.55);
 }
 
 .searchButton{
@@ -642,6 +764,7 @@ html,body{
     top:20px;
 
     border:0;
+
     background:none;
 
     color:white;
@@ -651,11 +774,11 @@ html,body{
     cursor:pointer;
 }
 
-/* categories */
-
 .categories{
     display:flex;
+
     flex-wrap:wrap;
+
     justify-content:center;
 
     gap:12px;
@@ -669,7 +792,8 @@ html,body{
     padding:11px 18px;
 
     border:
-        1px solid rgba(255,255,255,.12);
+        1px solid
+        rgba(255,255,255,.12);
 
     border-radius:30px;
 
@@ -689,7 +813,8 @@ html,body{
     background:
         rgba(255,255,255,.1);
 
-    transform:translateY(-2px);
+    transform:
+        translateY(-2px);
 }
 
 /* =========================
@@ -709,7 +834,8 @@ html,body{
     padding:32px;
 
     border:
-        1px solid rgba(255,255,255,.12);
+        1px solid
+        rgba(255,255,255,.12);
 
     border-radius:25px;
 
@@ -721,19 +847,43 @@ html,body{
 
 .resultTitle{
     font-size:22px;
+
     margin-bottom:20px;
+
     letter-spacing:2px;
 }
 
 .resultText{
     color:#d5d5d5;
+
     line-height:1.8;
+
     white-space:pre-wrap;
 }
 
-/* =========================
-   EXIT
-========================= */
+.loading{
+    display:inline-block;
+
+    width:18px;
+    height:18px;
+
+    border:
+        2px solid
+        rgba(255,255,255,.2);
+
+    border-top-color:#fff;
+
+    border-radius:50%;
+
+    animation:
+        spin .8s linear infinite;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
 
 .exit{
     position:fixed;
@@ -746,7 +896,8 @@ html,body{
     padding:10px 18px;
 
     border:
-        1px solid rgba(255,255,255,.15);
+        1px solid
+        rgba(255,255,255,.15);
 
     border-radius:20px;
 
@@ -758,15 +909,12 @@ html,body{
     cursor:pointer;
 }
 
-/* =========================
-   MOBILE
-========================= */
-
 @media(max-width:600px){
 
     .secretButton{
-        width:160px;
-        height:160px;
+        width:165px;
+        height:165px;
+
         font-size:19px;
         letter-spacing:4px;
     }
@@ -783,13 +931,16 @@ html,body{
 
     .searchInput{
         height:62px;
+
         padding-right:110px;
         padding-left:22px;
+
         font-size:14px;
     }
 
     .searchButton{
         height:48px;
+
         padding:0 18px;
     }
 
@@ -801,16 +952,16 @@ html,body{
     .welcomeText{
         font-size:16px;
     }
-
 }
 </style>
 </head>
 
 <body>
 
-<!-- =================================
+
+<!-- =========================
      INTRO
-================================= -->
+========================= -->
 
 <section id="intro">
 
@@ -821,8 +972,8 @@ html,body{
     <div class="fog fog3"></div>
 
     <button
-        class="secretButton"
-        onclick="startMysterious()">
+        id="mysteriousButton"
+        class="secretButton">
 
         MYSTERIOUS
 
@@ -835,9 +986,9 @@ html,body{
 </section>
 
 
-<!-- =================================
-     DOOR
-================================= -->
+<!-- =========================
+     SECRET DOOR
+========================= -->
 
 <section id="doorScene">
 
@@ -861,9 +1012,9 @@ html,body{
 </section>
 
 
-<!-- =================================
+<!-- =========================
      WELCOME
-================================= -->
+========================= -->
 
 <section id="welcome">
 
@@ -885,7 +1036,6 @@ html,body{
         <button
             id="enterButton"
             class="enterButton"
-            onclick="openRoom()"
             style="display:none">
 
             ENTER THE KNOWLEDGE ROOM
@@ -897,9 +1047,9 @@ html,body{
 </section>
 
 
-<!-- =================================
+<!-- =========================
      KNOWLEDGE ROOM
-================================= -->
+========================= -->
 
 <section id="room">
 
@@ -934,16 +1084,11 @@ html,body{
                 class="searchInput"
                 type="text"
                 placeholder="What do you want to know?"
-                onkeydown="
-                    if(event.key==='Enter'){
-                        searchMysterious();
-                    }
-                "
             >
 
             <button
+                id="voiceButton"
                 class="voiceButton"
-                onclick="voiceSearch()"
                 title="Voice Search">
 
                 🎤
@@ -951,8 +1096,8 @@ html,body{
             </button>
 
             <button
-                class="searchButton"
-                onclick="searchMysterious()">
+                id="searchButton"
+                class="searchButton">
 
                 SEARCH
 
@@ -963,41 +1108,53 @@ html,body{
 
         <div class="categories">
 
-            <div
+            <button
                 class="category"
-                onclick="setSearch('भारत का इतिहास')">
+                data-query="भारत का इतिहास">
+
                 🇮🇳 History
-            </div>
 
-            <div
+            </button>
+
+            <button
                 class="category"
-                onclick="setSearch('Science क्या है?')">
+                data-query="Science क्या है?">
+
                 🔬 Science
-            </div>
 
-            <div
+            </button>
+
+            <button
                 class="category"
-                onclick="setSearch('Artificial Intelligence')">
+                data-query="Artificial Intelligence">
+
                 🤖 AI
-            </div>
 
-            <div
+            </button>
+
+            <button
                 class="category"
-                onclick="setSearch('दुनिया के देशों की जानकारी')">
+                data-query="दुनिया के देशों की जानकारी">
+
                 🌍 World
-            </div>
 
-            <div
+            </button>
+
+            <button
                 class="category"
-                onclick="setSearch('Technology')">
+                data-query="Technology">
+
                 💻 Technology
-            </div>
 
-            <div
+            </button>
+
+            <button
                 class="category"
-                onclick="setSearch('General Knowledge')">
+                data-query="General Knowledge">
+
                 🧠 Knowledge
-            </div>
+
+            </button>
 
         </div>
 
@@ -1023,8 +1180,8 @@ html,body{
 
 
     <button
-        class="exit"
-        onclick="exitRoom()">
+        id="exitButton"
+        class="exit">
 
         ← Exit
 
@@ -1035,57 +1192,243 @@ html,body{
 
 <script>
 
-/* =================================
-   SPEECH
-================================= */
+/* ==================================================
+   MYSTERIOUS CONFIGURATION
+================================================== */
+
+const BACKEND_URL =
+    "https://mysterious-backend.onrender.com";
+
+
+/* ==================================================
+   DOM
+================================================== */
+
+const intro =
+    document.getElementById("intro");
+
+const doorScene =
+    document.getElementById("doorScene");
+
+const welcome =
+    document.getElementById("welcome");
+
+const room =
+    document.getElementById("room");
+
+const mysteriousButton =
+    document.getElementById("mysteriousButton");
+
+const enterButton =
+    document.getElementById("enterButton");
+
+const searchButton =
+    document.getElementById("searchButton");
+
+const voiceButton =
+    document.getElementById("voiceButton");
+
+const searchInput =
+    document.getElementById("searchInput");
+
+const exitButton =
+    document.getElementById("exitButton");
+
+const result =
+    document.getElementById("result");
+
+const resultText =
+    document.getElementById("resultText");
+
+
+/* ==================================================
+   VOICE
+================================================== */
 
 function speak(text){
 
-    if(!window.speechSynthesis){
+    if(
+        !("speechSynthesis" in window)
+    ){
         return;
     }
 
-    speechSynthesis.cancel();
+    window.speechSynthesis.cancel();
 
     const speech =
         new SpeechSynthesisUtterance(text);
 
-    speech.lang="hi-IN";
-    speech.rate=.86;
-    speech.pitch=.82;
-    speech.volume=1;
+    speech.lang = "hi-IN";
+    speech.rate = .85;
+    speech.pitch = .8;
+    speech.volume = 1;
 
-    speechSynthesis.speak(speech);
+    window.speechSynthesis.speak(
+        speech
+    );
 }
 
 
-/* =================================
-   START
-================================= */
+/* ==================================================
+   START MYSTERIOUS
+================================================== */
+
+function startMysterious(){
+
+    intro.style.display = "none";
+
+    doorScene.style.display = "flex";
+
+    setTimeout(() => {
+
+        doorScene.classList.add("open");
+
+    },400);
+
+
+    setTimeout(() => {
+
+        doorScene.style.display = "none";
+
+        showWelcome();
+
+    },3700);
+
+}
+
+
+/* ==================================================
+   WELCOME
+================================================== */
+
+function showWelcome(){
+
+    welcome.style.display = "flex";
+
+    const message =
+        "Secret Room में आपका स्वागत है। " +
+        "आप एक ऐसी दुनिया में आ चुके हैं " +
+        "जहाँ आपको वह हर ज्ञान मिलेगा जो आप चाहते हैं। " +
+        "तो क्या आप तैयार हैं? " +
+        "Welcome to your Mysterious World.";
+
+    typeText(
+        message,
+        () => {
+
+            speak(message);
+
+            enterButton.style.display =
+                "inline-block";
+
+        }
+    );
+
+}
+
+
+/* ==================================================
+   TYPE EFFECT
+================================================== */
+
+function typeText(
+    text,
+    callback
+){
+
+    const element =
+        document.getElementById(
+            "typingText"
+        );
+
+    element.innerHTML = "";
+
+    let index = 0;
+
+    const cursor =
+        document.createElement(
+            "span"
+        );
+
+    cursor.className =
+        "cursor";
+
+    element.appendChild(cursor);
+
+
+    function type(){
+
+        if(index < text.length){
+
+            cursor.insertAdjacentText(
+                "beforebegin",
+                text.charAt(index)
+            );
+
+            index++;
+
+            setTimeout(
+                type,
+                32
+            );
+
+        }else{
+
+            if(callback){
+                callback();
+            }
+
+        }
+
+    }
+
+    type();
+
+}
+
+
+/* ==================================================
+   OPEN ROOM
+================================================== */
+
+function openRoom(){
+
+    welcome.style.display =
+        "none";
+
+    room.style.display =
+        "block";
+
+    setTimeout(() => {
+
+        searchInput.focus();
+
+    },300);
+
+}
+
+
+/* ==================================================
+   SEARCH BACKEND
+================================================== */
 
 async function searchMysterious(){
 
-    const input =
-        document.getElementById("searchInput");
-
-    const result =
-        document.getElementById("result");
-
-    const resultText =
-        document.getElementById("resultText");
-
     const query =
-        input.value.trim();
+        searchInput.value.trim();
+
 
     if(!query){
 
-        input.focus();
+        searchInput.focus();
 
         return;
+
     }
 
 
-    result.style.display = "block";
+    result.style.display =
+        "block";
 
 
     resultText.innerHTML = `
@@ -1101,14 +1444,9 @@ async function searchMysterious(){
     `;
 
 
-    /*
-       IMPORTANT:
-       नीचे YOUR-RENDER-URL को
-       अपने actual Render URL से replace करें.
-    */
-
-    const BACKEND_URL =
-        "https://mysterious-backend.onrender.com";
+    result.scrollIntoView({
+        behavior:"smooth"
+    });
 
 
     try{
@@ -1134,9 +1472,10 @@ async function searchMysterious(){
         if(!response.ok){
 
             throw new Error(
-                "Server returned " +
+                "Server Error: " +
                 response.status
             );
+
         }
 
 
@@ -1147,7 +1486,7 @@ async function searchMysterious(){
         if(data.success){
 
             resultText.textContent =
-                data.answer || 
+                data.answer ||
                 "No answer received.";
 
         }else{
@@ -1162,195 +1501,31 @@ async function searchMysterious(){
     }catch(error){
 
         console.error(
-            "Mysterious connection error:",
+            "Mysterious Error:",
             error
         );
 
 
         resultText.textContent =
             "⚠️ Mysterious server से connection नहीं हो पाया।\n\n" +
-            "कृपया कुछ देर बाद फिर कोशिश करें।";
+            "Backend अभी starting हो सकता है। " +
+            "कुछ seconds बाद फिर कोशिश करें।";
 
     }
 
-
-    result.scrollIntoView({
-        behavior:"smooth"
-    });
-
 }
 
 
-/* =================================
-   WELCOME
-================================= */
-
-function showWelcome(){
-
-    const welcome =
-        document.getElementById("welcome");
-
-    welcome.style.display="flex";
-
-    const message =
-        "Secret Room में आपका स्वागत है। आप एक ऐसी दुनिया में आ चुके हैं जहाँ आपको वह हर ज्ञान मिलेगा जो आप चाहते हैं। तो क्या आप तैयार हैं? Welcome to your Secret World.";
-
-    typeText(
-        message,
-        function(){
-
-            speak(message);
-
-            document.getElementById(
-                "enterButton"
-            ).style.display="inline-block";
-
-        }
-    );
-}
-
-
-/* =================================
-   TYPING
-================================= */
-
-function typeText(text,callback){
-
-    const element =
-        document.getElementById("typingText");
-
-    element.innerHTML="";
-
-    let index=0;
-
-    const cursor =
-        document.createElement("span");
-
-    cursor.className="cursor";
-
-    element.appendChild(cursor);
-
-
-    function type(){
-
-        if(index < text.length){
-
-            cursor.insertAdjacentText(
-                "beforebegin",
-                text.charAt(index)
-            );
-
-            index++;
-
-            setTimeout(type,32);
-
-        }else{
-
-            if(callback){
-                callback();
-            }
-
-        }
-
-    }
-
-    type();
-}
-
-
-/* =================================
-   ROOM
-================================= */
-
-function openRoom(){
-
-    document.getElementById(
-        "welcome"
-    ).style.display="none";
-
-    document.getElementById(
-        "room"
-    ).style.display="block";
-
-    setTimeout(function(){
-
-        document.getElementById(
-            "searchInput"
-        ).focus();
-
-    },300);
-}
-
-
-/* =================================
-   SEARCH
-================================= */
-
-function searchMysterious(){
-
-    const input =
-        document.getElementById("searchInput");
-
-    const result =
-        document.getElementById("result");
-
-    const resultText =
-        document.getElementById("resultText");
-
-    const query =
-        input.value.trim();
-
-    if(!query){
-
-        input.focus();
-
-        return;
-
-    }
-
-    result.style.display="block";
-
-    resultText.textContent =
-        "आपका प्रश्न:\n\n" +
-        "“" + query + "”\n\n" +
-
-        "MYSTERIOUS ने आपका प्रश्न प्राप्त कर लिया है।\n\n" +
-
-        "यह अभी front-end prototype है। " +
-
-        "अगले चरण में इस search engine को सुरक्षित AI और Live Web Search से connect किया जाएगा, " +
-
-        "ताकि वास्तविक और current information प्राप्त हो सके।";
-
-    result.scrollIntoView({
-        behavior:"smooth"
-    });
-}
-
-
-/* =================================
-   CATEGORY
-================================= */
-
-function setSearch(text){
-
-    document.getElementById(
-        "searchInput"
-    ).value=text;
-
-    searchMysterious();
-}
-
-
-/* =================================
+/* ==================================================
    VOICE SEARCH
-================================= */
+================================================== */
 
 function voiceSearch(){
 
     const Recognition =
         window.SpeechRecognition ||
         window.webkitSpeechRecognition;
+
 
     if(!Recognition){
 
@@ -1359,60 +1534,207 @@ function voiceSearch(){
         );
 
         return;
+
     }
+
 
     const recognition =
         new Recognition();
 
-    recognition.lang="hi-IN";
 
-    recognition.interimResults=false;
+    recognition.lang =
+        "hi-IN";
 
-    recognition.maxAlternatives=1;
+
+    recognition.interimResults =
+        false;
+
+
+    recognition.maxAlternatives =
+        1;
+
 
     recognition.start();
 
 
-    recognition.onresult=function(event){
+    recognition.onstart =
+        () => {
 
-        const text =
-            event.results[0][0].transcript;
+            voiceButton.textContent =
+                "🔴";
 
-        document.getElementById(
-            "searchInput"
-        ).value=text;
+        };
 
-        searchMysterious();
-    };
+
+    recognition.onend =
+        () => {
+
+            voiceButton.textContent =
+                "🎤";
+
+        };
+
+
+    recognition.onerror =
+        () => {
+
+            voiceButton.textContent =
+                "🎤";
+
+        };
+
+
+    recognition.onresult =
+        (event) => {
+
+            const text =
+                event
+                .results[0][0]
+                .transcript;
+
+
+            searchInput.value =
+                text;
+
+
+            searchMysterious();
+
+        };
+
 }
 
 
-/* =================================
+/* ==================================================
    EXIT
-================================= */
+================================================== */
 
 function exitRoom(){
 
-    if(window.speechSynthesis){
+    if(
+        "speechSynthesis"
+        in window
+    ){
+
         speechSynthesis.cancel();
+
     }
 
-    document.getElementById(
-        "room"
-    ).style.display="none";
 
-    document.getElementById(
-        "result"
-    ).style.display="none";
+    room.style.display =
+        "none";
 
-    document.getElementById(
-        "searchInput"
-    ).value="";
 
-    document.getElementById(
-        "intro"
-    ).style.display="flex";
+    result.style.display =
+        "none";
+
+
+    searchInput.value =
+        "";
+
+
+    welcome.style.display =
+        "none";
+
+
+    doorScene.style.display =
+        "none";
+
+
+    doorScene.classList.remove(
+        "open"
+    );
+
+
+    intro.style.display =
+        "flex";
+
 }
+
+
+/* ==================================================
+   EVENTS
+================================================== */
+
+mysteriousButton.addEventListener(
+    "click",
+    startMysterious
+);
+
+
+enterButton.addEventListener(
+    "click",
+    openRoom
+);
+
+
+searchButton.addEventListener(
+    "click",
+    searchMysterious
+);
+
+
+voiceButton.addEventListener(
+    "click",
+    voiceSearch
+);
+
+
+exitButton.addEventListener(
+    "click",
+    exitRoom
+);
+
+
+searchInput.addEventListener(
+    "keydown",
+    (event) => {
+
+        if(
+            event.key === "Enter"
+        ){
+
+            searchMysterious();
+
+        }
+
+    }
+);
+
+
+document
+    .querySelectorAll(".category")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                searchInput.value =
+                    button.dataset.query;
+
+                searchMysterious();
+
+            }
+        );
+
+    });
+
+
+/* ==================================================
+   INITIAL STATE
+================================================== */
+
+intro.style.display =
+    "flex";
+
+doorScene.style.display =
+    "none";
+
+welcome.style.display =
+    "none";
+
+room.style.display =
+    "none";
 
 </script>
 
