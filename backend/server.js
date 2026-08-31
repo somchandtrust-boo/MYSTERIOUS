@@ -1,28 +1,39 @@
 const express = require("express");
 const cors = require("cors");
+const OpenAI = require("openai");
 require("dotenv").config();
 
 const app = express();
 
 const PORT = process.env.PORT || 3000;
 
+
 /* =========================
    MIDDLEWARE
 ========================= */
 
-app.use(express.json());
+app.use(express.json({ limit: "1mb" }));
 
 app.use(
     cors({
         origin: "*",
-        methods: ["POST", "GET"],
+        methods: ["GET", "POST"],
         allowedHeaders: ["Content-Type"]
     })
 );
 
 
 /* =========================
-   BASIC ROUTE
+   OPENAI
+========================= */
+
+const client = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY
+});
+
+
+/* =========================
+   HOME
 ========================= */
 
 app.get("/", (req, res) => {
@@ -30,21 +41,24 @@ app.get("/", (req, res) => {
     res.json({
         success: true,
         name: "Mysterious",
-        message: "Mysterious Knowledge Engine is running."
+        service: "AI Knowledge Engine",
+        status: "online"
     });
 
 });
 
 
 /* =========================
-   HEALTH CHECK
+   HEALTH
 ========================= */
 
 app.get("/health", (req, res) => {
 
     res.json({
+        success: true,
         status: "online",
-        service: "Mysterious Knowledge Engine",
+        aiConfigured:
+            Boolean(process.env.OPENAI_API_KEY),
         time: new Date().toISOString()
     });
 
@@ -52,7 +66,7 @@ app.get("/health", (req, res) => {
 
 
 /* =========================
-   ASK ENDPOINT
+   ASK AI
 ========================= */
 
 app.post("/ask", async (req, res) => {
@@ -64,6 +78,7 @@ app.post("/ask", async (req, res) => {
                 ? req.body.question.trim()
                 : "";
 
+
         if (!question) {
 
             return res.status(400).json({
@@ -74,43 +89,82 @@ app.post("/ask", async (req, res) => {
         }
 
 
-        /*
-          AI CONNECTION WILL BE ADDED
-          IN THE NEXT STEP.
+        if (!process.env.OPENAI_API_KEY) {
 
-          DO NOT PUT YOUR API KEY HERE.
-        */
+            return res.status(500).json({
+                success: false,
+                error:
+                    "AI service is not configured on the server."
+            });
+
+        }
 
 
-        return res.json({
+        const response =
+            await client.responses.create({
+
+                model: "gpt-5.6-luna",
+
+                tools: [
+                    {
+                        type: "web_search"
+                    }
+                ],
+
+                input: [
+                    {
+                        role: "system",
+                        content:
+                            "You are MYSTERIOUS, a multilingual " +
+                            "knowledge assistant. Answer clearly " +
+                            "and accurately. The user may ask in " +
+                            "Hindi, Gujarati, or English. " +
+                            "Reply primarily in the language used " +
+                            "by the user. For current or changing " +
+                            "information, use web search. " +
+                            "Do not invent facts."
+                    },
+                    {
+                        role: "user",
+                        content: question
+                    }
+                ]
+
+            });
+
+
+        const answer =
+            response.output_text ||
+            "Mysterious could not generate an answer.";
+
+
+        res.json({
 
             success: true,
 
             question: question,
 
-            answer:
-                "Mysterious ने आपका प्रश्न प्राप्त कर लिया है। " +
-                "AI Knowledge Engine अभी connect किया जा रहा है।",
+            answer: answer,
 
-            source: "Mysterious"
+            source: "Mysterious AI Knowledge Engine"
 
         });
 
-    }
 
-    catch (error) {
+    } catch (error) {
 
         console.error(
-            "Server Error:",
+            "Mysterious AI Error:",
             error
         );
+
 
         res.status(500).json({
 
             success: false,
 
             error:
-                "Mysterious server में समस्या हुई।"
+                "Mysterious AI service में समस्या हुई।"
 
         });
 
@@ -137,13 +191,13 @@ app.use((req, res) => {
 
 
 /* =========================
-   START SERVER
+   START
 ========================= */
 
 app.listen(PORT, () => {
 
     console.log(
-        `Mysterious server running on port ${PORT}`
+        `Mysterious AI server running on port ${PORT}`
     );
 
 });
