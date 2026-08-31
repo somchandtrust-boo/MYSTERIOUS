@@ -1063,32 +1063,121 @@ function speak(text){
    START
 ================================= */
 
-function startMysterious(){
+async function searchMysterious(){
 
-    const intro =
-        document.getElementById("intro");
+    const input =
+        document.getElementById("searchInput");
 
-    const door =
-        document.getElementById("doorScene");
+    const result =
+        document.getElementById("result");
 
-    intro.style.display="none";
+    const resultText =
+        document.getElementById("resultText");
 
-    door.style.display="flex";
+    const query =
+        input.value.trim();
 
-    setTimeout(function(){
+    if(!query){
 
-        door.classList.add("open");
+        input.focus();
 
-    },400);
+        return;
+    }
 
 
-    setTimeout(function(){
+    result.style.display = "block";
 
-        door.style.display="none";
 
-        showWelcome();
+    resultText.innerHTML = `
+        <div style="
+            display:flex;
+            align-items:center;
+            gap:10px;
+            color:#aaa;
+        ">
+            <span class="loading"></span>
+            Mysterious is thinking...
+        </div>
+    `;
 
-    },3700);
+
+    /*
+       IMPORTANT:
+       नीचे YOUR-RENDER-URL को
+       अपने actual Render URL से replace करें.
+    */
+
+    const BACKEND_URL =
+        "https://YOUR-RENDER-URL.onrender.com";
+
+
+    try{
+
+        const response =
+            await fetch(
+                BACKEND_URL + "/ask",
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:JSON.stringify({
+                        question:query
+                    })
+                }
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Server returned " +
+                response.status
+            );
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if(data.success){
+
+            resultText.textContent =
+                data.answer || 
+                "No answer received.";
+
+        }else{
+
+            resultText.textContent =
+                data.error ||
+                "Mysterious could not answer.";
+
+        }
+
+
+    }catch(error){
+
+        console.error(
+            "Mysterious connection error:",
+            error
+        );
+
+
+        resultText.textContent =
+            "⚠️ Mysterious server से connection नहीं हो पाया।\n\n" +
+            "कृपया कुछ देर बाद फिर कोशिश करें।";
+
+    }
+
+
+    result.scrollIntoView({
+        behavior:"smooth"
+    });
+
 }
 
 
